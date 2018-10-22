@@ -2,13 +2,11 @@ package mvc.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import mvc.model.Tarefa;
-import mvc.model.DAO;
 
 @Controller
 public class TarefasController {
 	
-	@RequestMapping("/")
+	@RequestMapping("/a")
 	public String execute() {
 		System.out.println("Lógica do MVC");
 		return "info";
