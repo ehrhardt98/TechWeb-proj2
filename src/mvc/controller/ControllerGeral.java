@@ -66,7 +66,7 @@ public class ControllerGeral {
 		return site;
 	}
 
-	@RequestMapping("selecionaMural")
+	@RequestMapping(value = "selecionaMural", method = RequestMethod.POST)
 	public String selecionaMural(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, Model model) {
 		DAO dao = new DAO();
 		Integer id_mural = Integer.parseInt(sid_mural);
@@ -81,7 +81,7 @@ public class ControllerGeral {
 		return "mural";
 	}
 
-	@RequestMapping("alteraMural")
+	@RequestMapping(value = "alteraMural", method = RequestMethod.POST)
 	public String alteraMural(@RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_mural") String sid_mural, @RequestParam(value="nome_mural") String nome_mural, Model model) {
 		DAO dao;
 		Integer id_usuario = Integer.parseInt(sid_usuario);
@@ -97,7 +97,7 @@ public class ControllerGeral {
 		return "home";
 	}
 
-	@RequestMapping("deletaMural")
+	@RequestMapping(value = "deletaMural", method = RequestMethod.POST)
 	public String deletaMural(@RequestParam(value="id_usuario") String sid_usuario,@RequestParam(value="id_mural") String sid_mural, Model model) {
 		DAO dao;
 
@@ -113,7 +113,7 @@ public class ControllerGeral {
 		return "home";
 	}
 
-	@RequestMapping("criaMural")
+	@RequestMapping(value = "criaMural", method = RequestMethod.POST)
 	public String criaMural(@RequestParam(value="id_usuario") String sid_usuario, Model model) {
 		DAO dao = new DAO();
 
@@ -130,7 +130,7 @@ public class ControllerGeral {
 		return "home";
 	}
 
-	@RequestMapping("voltaHome")
+	@RequestMapping(value = "voltaHome", method = RequestMethod.POST)
 	public String voltaHome(@RequestParam(value="homde") String shome, Model model) {
 		DAO dao = new DAO();
 		Integer id_usuario = Integer.parseInt(shome);
@@ -140,7 +140,7 @@ public class ControllerGeral {
 		return "home";
 	}
 
-	@RequestMapping("criaNota")
+	@RequestMapping(value = "criaNota", method = RequestMethod.POST)
 	public String criaNota(@RequestParam(value="id_usuario") String id_usuario, @RequestParam(value="id_mural") String sid_mural, @RequestParam(value="create_note") String create_note, Model model) {
 		DAO dao = new DAO();
 		Nota nota = new Nota();
@@ -158,7 +158,7 @@ public class ControllerGeral {
 		return "mural";
 	}
 
-	@RequestMapping("deletaNota")
+	@RequestMapping(value = "deletaNota", method = RequestMethod.POST)
 	public String deletaNota(@RequestParam(value="id_nota") String id_nota, @RequestParam(value="id_mural") String id_mural,@RequestParam(value="id_usuario") String id_usuario, Model model) {
 		DAO dao = new DAO();
 		String idstring = id_nota;
@@ -173,7 +173,7 @@ public class ControllerGeral {
 		return "mural";
 	}
 
-	@RequestMapping("alteraNota")
+	@RequestMapping(value = "alteraNota", method = RequestMethod.POST)
 	public String alteraNota(@RequestParam(value="id_mural") String id_mural, @RequestParam(value="id_usuario") String id_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="tipo_nota") String tipo_nota, @RequestParam(value="edit_nota") String edit_nota, Model model) {
 		DAO dao = new DAO();
 		Nota nota = new Nota();
@@ -190,7 +190,7 @@ public class ControllerGeral {
 		return "mural";
 	}
 
-	@RequestMapping("criaBlob")
+	@RequestMapping(value = "criaBlob", method = RequestMethod.POST)
 	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="blob") Part blob, Model model) {
 		DAO dao;
 
@@ -225,7 +225,7 @@ public class ControllerGeral {
 		return "mural";
 	}
 
-	@RequestMapping("mostraBlob")
+	@RequestMapping(value = "mostraBlob", method = RequestMethod.POST)
 	public String mostraBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, HttpServletResponse response, Model model) {
 		DAO dao;
 		Integer id_mural = Integer.parseInt(sid_mural);
