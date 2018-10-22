@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
@@ -22,7 +24,7 @@ import mvc.model.Usuario;
 @Controller
 public class ControllerGeral {
 
-	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"", "/", "voltaInicio"}, method = RequestMethod.GET)
 	public String execute() {
 		return "inicio";
 	}
@@ -44,7 +46,6 @@ public class ControllerGeral {
 
 	@RequestMapping(value = "entraLogin", method = RequestMethod.POST)
 	public String entraLogin(@RequestParam(value="username-login") String username_login, @RequestParam(value="senha-login") String senha_login, Model model) {
-		System.out.println("faidhfiajsdhfh");
 		DAO dao = new DAO();
 		Usuario usuario = new Usuario();
 		String site;
@@ -71,8 +72,6 @@ public class ControllerGeral {
 		DAO dao = new DAO();
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
-
-		System.out.println(id_mural);
 
 		dao.close();
 
@@ -115,23 +114,26 @@ public class ControllerGeral {
 
 	@RequestMapping(value = "criaMural", method = RequestMethod.POST)
 	public String criaMural(@RequestParam(value="id_usuario") String sid_usuario, Model model) {
-		DAO dao = new DAO();
+		DAO dao;
 
 		dao = new DAO();
 
 		Mural mural = new Mural();
+		
+		Integer id_usuario = Integer.parseInt(sid_usuario);
+		
 		mural.setIdUsuario(Integer.parseInt(sid_usuario));
 		mural.setNome("Novo Mural");
 
 		dao.adicionaMural(mural);
 		dao.close();
 
-		model.addAttribute("id_usuario", sid_usuario);
+		model.addAttribute("id_usuario", id_usuario);
 		return "home";
 	}
 
 	@RequestMapping(value = "voltaHome", method = RequestMethod.POST)
-	public String voltaHome(@RequestParam(value="homde") String shome, Model model) {
+	public String voltaHome(@RequestParam(value="home") String shome, Model model) {
 		DAO dao = new DAO();
 		Integer id_usuario = Integer.parseInt(shome);
 
@@ -141,19 +143,22 @@ public class ControllerGeral {
 	}
 
 	@RequestMapping(value = "criaNota", method = RequestMethod.POST)
-	public String criaNota(@RequestParam(value="id_usuario") String id_usuario, @RequestParam(value="id_mural") String sid_mural, @RequestParam(value="create_note") String create_note, Model model) {
+	public String criaNota(@RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_mural") String sid_mural, @RequestParam(value="create_note") String create_note, Model model) {
 		DAO dao = new DAO();
 		Nota nota = new Nota();
 		nota.setTipo("texto");
 		nota.setConteudo(create_note);
 
-		nota.setIdMural(Integer.parseInt(sid_mural));
+		Integer id_mural = Integer.parseInt(sid_mural);
+		Integer id_usuario = Integer.parseInt(sid_usuario);
+		
+		nota.setIdMural(id_mural);
 
 		dao.adicionaNota(nota);
 
 		dao.close();
 
-		model.addAttribute("id_mural", sid_mural);
+		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
 		return "mural";
 	}
@@ -191,11 +196,12 @@ public class ControllerGeral {
 	}
 
 	@RequestMapping(value = "criaBlob", method = RequestMethod.POST)
-	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="blob") Part blob, Model model) {
+	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="blob") Part blob, Model model, HttpServletRequest request, HttpServletResponse response) {
 		DAO dao;
-
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
+		Integer id_nota = Integer.parseInt(sid_nota);
 
 		Part part = blob;
 
@@ -206,7 +212,7 @@ public class ControllerGeral {
 				Nota nota = new Nota();
 				InputStream input = part.getInputStream();
 
-				nota.setId(Integer.parseInt(sid_nota));
+				nota.setId(id_nota);
 				nota.setBlob(input);
 
 				nota.setIdMural(id_mural);

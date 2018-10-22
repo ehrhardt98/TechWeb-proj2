@@ -21,8 +21,9 @@
 			<h2>Home</h2>
 		</div>
 		
-
-		<a href="inicio.jsp" class="menu-button">Logout</a>
+		<form action="voltaInicio">
+			<button type="submit" >Logout</button>
+		</form>
 
 		<form class="search">
 			<input type="text" name="search" placeholder="Procurar..."
@@ -36,7 +37,7 @@
 				Integer id_usuario = (Integer)request.getAttribute("id_usuario");
 				ArrayList<Mural> murais = dao.getListaMurais(id_usuario);
 				for (Mural mural : murais) { %>
-				<form action="selecionaMural" style="width: auto; height:auto; margin-right: 0">
+				<form action="selecionaMural" method="post" style="width: auto; height:auto; margin-right: 0">
 					<input type="hidden" name="id_usuario" value="<%=id_usuario%>"/>
 					<button type="submit" name="id_mural" value="<%=mural.getId()%>" style="display: inline;
 				    margin: 30px 10px 0px 10px;
@@ -50,7 +51,7 @@
 				    	Ultima modificação: <%=mural.getUltimaMod() %>
 			    	</button>
 				</form>
-				<form action="alteraMural" id="altera-mural" style="
+				<form action="alteraMural" method="post" id="altera-mural" style="
 							    position: relative;
 							    left: 11px;">
 					<input type="hidden" name="id_mural" value="<%=mural.getId() %>">
@@ -61,7 +62,7 @@
 				</form>
 				
 				
-				<form action="deletaMural" style="
+				<form action="deletaMural" method="post" style="
 							    position: relative;
 							    left: 11px;">
 					<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
@@ -76,7 +77,7 @@
 			<% } %>
 
 
-			<form action="criaMural" style="width: auto; height:auto; margin-right:0 ">
+			<form action="criaMural" method="post" style="width: auto; height:auto; margin-right:0 ">
 				<button type="submit" name="id_usuario" value="<%=id_usuario%>"style="display: inline; margin: 30px 10px 0px 10px; height: 12%; width: 25%; min-width: 180px; padding-bottom: 0.83em; background-color: #707070;">
 					<h2>Criar novo mural</h2>
 				</button>

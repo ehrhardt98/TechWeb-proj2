@@ -59,7 +59,7 @@
 		</div>
 
 		<div class="menu">
-			<form action="voltaHome">
+			<form action="voltaHome" method="post">
 				<button type="submit" class="menu-item" name="home" value="<%=id_usuario%>">Meus murais</button>
 			</form>
 			<a href="inicio.jsp" class="menu-item">Logout</a>
@@ -67,7 +67,7 @@
 	<br/>
 		<div class="canvas">
 			<div class="create-note-div">
-				<form class="create-note-form" action="criaNota">
+				<form class="create-note-form" action="criaNota" method="post">
 					<input type="hidden" name="id_usuario" value="<%=id_usuario%>"/>
 					<input type="text" name="create_note" placeholder="Crie uma nota" style="display: block;
 	   				border-style: solid;
@@ -111,7 +111,7 @@
 					    margin: auto;
 					    height: 20px;
 					    padding: 0px">
-						<form action="deletaNota">
+						<form action="deletaNota" method="post">
 							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
 							<input type="hidden" name="id_mural" value="<%=id_mural%>">
 							<button type="submit" name="id_nota" value="<%=nota.getId() %>" style="display: block;
@@ -137,7 +137,7 @@
 				    height: auto;
 				    word-break: break-word;">
 						<td class="bot-nota-cell">
-						<form action="alteraNota" id="altera-nota">
+						<form action="alteraNota" id="altera-nota" method="post">
 							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
 							<input type="hidden" name="tipo_nota" value="<%=nota.getTipo() %>">
 							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
