@@ -164,17 +164,18 @@ public class ControllerGeral {
 	}
 
 	@RequestMapping(value = "deletaNota", method = RequestMethod.POST)
-	public String deletaNota(@RequestParam(value="id_nota") String id_nota, @RequestParam(value="id_mural") String id_mural,@RequestParam(value="id_usuario") String id_usuario, Model model) {
+	public String deletaNota(@RequestParam(value="id_nota") String sid_nota, @RequestParam(value="id_mural") String sid_mural,@RequestParam(value="id_usuario") String sid_usuario, Model model) {
 		DAO dao = new DAO();
-		String idstring = id_nota;
-		Integer id = Integer.parseInt(idstring);
+		Integer id_nota = Integer.parseInt(sid_nota);
+		Integer id_mural = Integer.parseInt(sid_mural);
+		Integer id_usuario = Integer.parseInt(sid_usuario);
 
-		dao.removeNota(id);
+		dao.removeNota(id_nota);
 
 		dao.close();
 
-		model.addAttribute(id_mural);
-		model.addAttribute(id_usuario);
+		model.addAttribute("id_mural", id_mural);
+		model.addAttribute("id_usuario", id_usuario);
 		return "mural";
 	}
 

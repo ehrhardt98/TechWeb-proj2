@@ -158,7 +158,7 @@
 						
 						<form action="criaBlob" method="post" enctype="multipart/form-data">
 							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
-							<input type="hidden" name="id_mural" value="<%=id_mural%>">
+							<input type="hidden" name="id_mural" value="<%=id_mural %>">
 							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
 							<label for="lable" style="display: block;
 							    width: 20px;
