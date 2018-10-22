@@ -7,14 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import mvc.model.DAO;
 import mvc.model.Mural;
@@ -22,6 +28,7 @@ import mvc.model.Nota;
 import mvc.model.Usuario;
 
 @Controller
+@MultipartConfig
 public class ControllerGeral {
 
 	@RequestMapping(value = {"", "/", "voltaInicio"}, method = RequestMethod.GET)
@@ -180,9 +187,11 @@ public class ControllerGeral {
 	}
 
 	@RequestMapping(value = "alteraNota", method = RequestMethod.POST)
-	public String alteraNota(@RequestParam(value="id_mural") String id_mural, @RequestParam(value="id_usuario") String id_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="tipo_nota") String tipo_nota, @RequestParam(value="edit_nota") String edit_nota, Model model) {
+	public String alteraNota(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="tipo_nota") String tipo_nota, @RequestParam(value="edit_nota") String edit_nota, Model model) {
 		DAO dao = new DAO();
 		Nota nota = new Nota();
+		Integer id_mural = Integer.parseInt(sid_mural);
+		Integer id_usuario = Integer.parseInt(sid_usuario);
 
 		nota.setId(Integer.parseInt(sid_nota));
 		nota.setTipo(tipo_nota);
@@ -195,16 +204,16 @@ public class ControllerGeral {
 		model.addAttribute("id_usuario", id_usuario);
 		return "mural";
 	}
-
+	
 	@RequestMapping(value = "criaBlob", method = RequestMethod.POST)
-	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="blob") Part blob, Model model, HttpServletRequest request, HttpServletResponse response) {
+	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, Model model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DAO dao;
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
 		Integer id_nota = Integer.parseInt(sid_nota);
-
-		Part part = blob;
+		
+		PrintWriter out = response.getWriter();
+		Part part = request.getPart("blob");
 
 		if (part != null) {
 			try {
@@ -224,6 +233,8 @@ public class ControllerGeral {
 
 				model.addAttribute("id_mural", id_mural);
 				model.addAttribute("id_usuario", id_usuario);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/mural.jsp");
+				dispatcher.forward(request, response);
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -237,6 +248,7 @@ public class ControllerGeral {
 		DAO dao;
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
+		Integer id_nota = Integer.parseInt(sid_nota);
 
 
 
@@ -244,7 +256,7 @@ public class ControllerGeral {
 
 		Nota nota = new Nota();
 
-		nota.setId(Integer.parseInt(sid_nota));
+		nota.setId(id_nota);
 
 		byte[] a = dao.viewBlob(nota);
 
