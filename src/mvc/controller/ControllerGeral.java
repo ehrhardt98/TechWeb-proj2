@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +28,58 @@ import mvc.model.Usuario;
 
 @Controller
 public class ControllerGeral {
+
+	public List<String> jsonParser() {
+		try {
+			URL url = new URL("http://api.openweathermap.org/data/2.5/weather?id=3448439&APPID=bcba6ed7db41f9f8f0fec131c856009e");
+			try {
+				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.connect();
+				int responsecode = conn.getResponseCode();
+
+				if( responsecode != 200) {
+					throw new RuntimeException("HttpResponseCode: " + responsecode);
+				}
+				else {
+					Scanner sc = new Scanner(url.openStream());
+					String inline = "";
+					while(sc.hasNext()) {
+						inline += sc.nextLine();
+					}
+					System.out.println("\nJSON data in string format");
+					System.out.println(inline);
+					sc.close();
+					
+					List<String> ret = new ArrayList<String>();
+					
+					String temperatura = String.valueOf(Integer.parseInt(inline.substring(inline.lastIndexOf("\"temp\":")+7, inline.lastIndexOf("\"temp\":")+10))-273);
+					String local = inline.substring(inline.lastIndexOf("\"name\":")+8, inline.indexOf("\",\"cod\":"));
+					String main = inline.substring(inline.indexOf("\"description\":")+15, inline.indexOf("\",\"icon\":"));
+					String humidade = inline.substring(inline.lastIndexOf("\"humidity\":")+11, inline.indexOf(",\"temp_min\":"));
+					
+					ret.add(temperatura);
+					ret.add(local);
+					ret.add(main);
+					ret.add(humidade);
+				
+					return ret;
+				
+				}	
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+
+	}
 
 	@RequestMapping(value = {"", "/", "voltaInicio"}, method = RequestMethod.GET)
 	public String execute() {
@@ -63,6 +120,11 @@ public class ControllerGeral {
 		}
 
 		dao.close();
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		model.addAttribute("id_usuario", (usuario.getId()));
 		return site;
 	}
@@ -77,6 +139,11 @@ public class ControllerGeral {
 
 		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "mural";
 	}
 
@@ -92,6 +159,11 @@ public class ControllerGeral {
 		dao.alteraMural(mural);
 		dao.close();
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 
 		return "home";
 	}
@@ -109,6 +181,11 @@ public class ControllerGeral {
 		dao.close();
 
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "home";
 	}
 
@@ -119,9 +196,9 @@ public class ControllerGeral {
 		dao = new DAO();
 
 		Mural mural = new Mural();
-		
+
 		Integer id_usuario = Integer.parseInt(sid_usuario);
-		
+
 		mural.setIdUsuario(Integer.parseInt(sid_usuario));
 		mural.setNome("Novo Mural");
 
@@ -129,6 +206,11 @@ public class ControllerGeral {
 		dao.close();
 
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "home";
 	}
 
@@ -139,6 +221,11 @@ public class ControllerGeral {
 
 		dao.close();
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "home";
 	}
 
@@ -151,7 +238,7 @@ public class ControllerGeral {
 
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
-		
+
 		nota.setIdMural(id_mural);
 
 		dao.adicionaNota(nota);
@@ -160,6 +247,11 @@ public class ControllerGeral {
 
 		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "mural";
 	}
 
@@ -175,6 +267,11 @@ public class ControllerGeral {
 
 		model.addAttribute(id_mural);
 		model.addAttribute(id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "mural";
 	}
 
@@ -192,13 +289,17 @@ public class ControllerGeral {
 
 		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		return "mural";
 	}
 
 	@RequestMapping(value = "criaBlob", method = RequestMethod.POST)
 	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="blob") Part blob, Model model, HttpServletRequest request, HttpServletResponse response) {
 		DAO dao;
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
 		Integer id_nota = Integer.parseInt(sid_nota);
@@ -223,6 +324,11 @@ public class ControllerGeral {
 
 				model.addAttribute("id_mural", id_mural);
 				model.addAttribute("id_usuario", id_usuario);
+				List<String> lista = this.jsonParser();
+				model.addAttribute("temperatura", lista.get(0));
+				model.addAttribute("local", lista.get(1));
+				model.addAttribute("main", lista.get(2));
+				model.addAttribute("humidade", lista.get(3));
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -249,6 +355,11 @@ public class ControllerGeral {
 
 		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
+		List<String> lista = this.jsonParser();
+		model.addAttribute("temperatura", lista.get(0));
+		model.addAttribute("local", lista.get(1));
+		model.addAttribute("main", lista.get(2));
+		model.addAttribute("humidade", lista.get(3));
 		response.setContentType("image/gif");
 
 		byte byteArray[] = a;
