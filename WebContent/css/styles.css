@@ -175,7 +175,7 @@ body {
     justify-content: center;
     align-items: center;
     display: flex;
-    padding-top: 1em;
+    padding-top: 0.5em;
 }
 
 .create-note-form {

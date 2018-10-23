@@ -85,8 +85,46 @@ public class ControllerGeral {
 			e.printStackTrace();
 		}
 		return null;
-		
+	}
+	
+	public String jsonParser2() {
+		try {
+			URL url = new URL("http://numbersapi.com/random/trivia?json");
+			try {
+				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.connect();
+				int responsecode = conn.getResponseCode();
 
+				if( responsecode != 200) {
+					throw new RuntimeException("HttpResponseCode: " + responsecode);
+				}
+				else {
+					Scanner sc = new Scanner(url.openStream());
+					String inline = "";
+					while(sc.hasNext()) {
+						inline += sc.nextLine();
+					}
+					System.out.println("\nJSON data in string format");
+					System.out.println(inline);
+					sc.close();
+					
+					String trivia = inline.substring(inline.lastIndexOf("\"text\": \"")+9, inline.indexOf(".\", \"number\":"));
+					
+					return trivia;
+				
+				}	
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@RequestMapping(value = {"", "/", "voltaInicio"}, method = RequestMethod.GET)
@@ -152,6 +190,7 @@ public class ControllerGeral {
 		model.addAttribute("local", lista.get(1));
 		model.addAttribute("main", lista.get(2));
 		model.addAttribute("humidade", lista.get(3));
+		model.addAttribute("trivia", this.jsonParser2());
 		return "mural";
 	}
 
@@ -260,6 +299,7 @@ public class ControllerGeral {
 		model.addAttribute("local", lista.get(1));
 		model.addAttribute("main", lista.get(2));
 		model.addAttribute("humidade", lista.get(3));
+		model.addAttribute("trivia", this.jsonParser2());
 		return "mural";
 	}
 
@@ -283,6 +323,7 @@ public class ControllerGeral {
 		model.addAttribute("humidade", lista.get(3));
 		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
+		model.addAttribute("trivia", this.jsonParser2());
 		return "mural";
 	}
 
@@ -307,6 +348,7 @@ public class ControllerGeral {
 		model.addAttribute("local", lista.get(1));
 		model.addAttribute("main", lista.get(2));
 		model.addAttribute("humidade", lista.get(3));
+		model.addAttribute("trivia", this.jsonParser2());
 		return "mural";
 	}
 	
@@ -343,6 +385,7 @@ public class ControllerGeral {
 				model.addAttribute("local", lista.get(1));
 				model.addAttribute("main", lista.get(2));
 				model.addAttribute("humidade", lista.get(3));
+				model.addAttribute("trivia", this.jsonParser2());
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/mural.jsp");
 				dispatcher.forward(request, response);
 
@@ -377,6 +420,7 @@ public class ControllerGeral {
 		model.addAttribute("local", lista.get(1));
 		model.addAttribute("main", lista.get(2));
 		model.addAttribute("humidade", lista.get(3));
+		model.addAttribute("trivia", this.jsonParser2());
 		response.setContentType("image/gif");
 
 		byte byteArray[] = a;

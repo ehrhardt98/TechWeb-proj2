@@ -81,6 +81,11 @@
 		</form>
 		<a href="inicio.jsp" class="menu-item">Logout</a>
 	</div>
+	
+	<div style="text-align: center;height: 10%;width: 100%;text-decoration: none;flex-direction: column;justify-content: center;align-items: center;display: flex;padding-top: 0.3em;">
+		<h4 style="margin: 3px">Trivia: <%=request.getAttribute("trivia")%></h4>
+	</div>
+	
 	<br />
 	<div class="canvas">
 		<div class="create-note-div">
