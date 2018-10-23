@@ -95,70 +95,110 @@
 
 		<%  ArrayList<Nota> notas = dao2.getListaNotas(id_mural);
 				for (Nota nota : notas ) { %>
-		<table
-			style="display: inline; margin: 0px 8px; width: auto; height: auto; min-width: 100px; min-height: 100px;">
-
-			<tr
-				style="display: block; background-color: #cccc00; width: auto; height: auto; word-break: break-word;">
-				<td name="id"
-					style="display: inline-block; max-width: 90%; height: 100%; word-break: break-word;">
-					<%=nota.getId() %>
-				</td>
-				<td
-					style="display: inline-block; float: right; width: auto; word-break: break-word; vertical-align: middle; margin: auto; height: 20px; padding: 0px">
-					<form action="deletaNota" method="post">
-						<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
-						<input type="hidden" name="id_mural" value="<%=id_mural%>">
-						<button type="submit" name="id_nota" value="<%=nota.getId() %>"
-							style="display: block; width: 20px; height: 20px; background-position: 0px 0px; border: 0px; padding: 1px; cursor: pointer; background-color: #cccc00;">
-							<img src="img/oba.png" title="Apagar nota"
-								style="display: block; height: 18px; margin-left: auto; margin-right: auto;">
-						</button>
-					</form>
-				</td>
-			</tr>
-
-			<tr
-				style="display: block; background-color: #ffff99; width: auto; height: auto; word-break: break-word;">
-				<td class="bot-nota-cell">
-					<form action="alteraNota" id="altera-nota" method="post">
-						<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
-						<input type="hidden" name="tipo_nota" value="<%=nota.getTipo() %>">
-						<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
-						<input type="text" name="edit_nota"
-							value="<%=nota.getConteudo() %>"
-							style="outline: none; background: transparent; border-top: transparent; border-right: transparent; border-left: transparent; border-bottom: transparent">
-						<button type="submit" name="id_mural" value="<%=id_mural%>">
-							<img src="img/edit.png" title="Adicionar Imagem"
-								style="display: block; height: 13px; margin-left: auto; margin-right: auto;"></img>
-						</button>
-					</form>
-
-					<form action="criaBlob" method="post" enctype="multipart/form-data">
-						<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
-						<input type="hidden" name="id_mural" value="<%=id_mural%>">
-						<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
-						<label for="lable"
-							style="display: block; width: 20px; height: 20px; background-position: 0px 0px; border: 0px; padding: 1px; cursor: pointer; background-color: #ffff99;">
-							<img src="img/add.png" title="Adicionar Imagem"
-							style="display: block; height: 22px; margin-left: auto; margin-right: auto;"></img>
-						</label> <input type="file" onchange="this.form.submit()" id="lable"
-							name="blob" required="required" class="inputfile">
-					</form>
-
-					<form action="mostraBlob" method="post">
-						<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
-						<input type="hidden" name="id_mural" value="<%=id_mural %>">
-						<input type="hidden" name="id_usuario" value="<%=id_usuario %>">
-						<button type="submit">Mostrar Imagem</button>
-					</form>
-				</td>
-			</tr>
-
-		</table>
-		<% } %>
-
-	</div>
+				<table style="display: inline;
+			    margin: 0px 8px;
+			    width: auto;
+			    height: auto;
+			    min-width: 100px;
+			    min-height: 100px;">
+			    
+					<tr style="display: block;
+				    background-color: #cccc00;
+				    width: auto;
+				    height: auto;
+				    word-break: break-word;">
+						<td name="id" style="display: inline-block;
+					    max-width: 90%;
+					    height: 100%;
+					    word-break: break-word;">
+							<%=nota.getId() %>
+						</td>
+						<td style="display: inline-block;
+					    float: right;
+					    width: auto;
+					    word-break: break-word;
+					    vertical-align: middle;
+					    margin: auto;
+					    height: 20px;
+					    padding: 0px">
+						<form action="deletaNota" method="post">
+							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
+							<input type="hidden" name="id_mural" value="<%=id_mural%>">
+							<button type="submit" name="id_nota" value="<%=nota.getId() %>" style="display: block;
+						    width: 20px;
+						    height: 20px;
+						    background-position: 0px 0px;
+						    border: 0px;
+						    padding: 1px;
+						    cursor: pointer;
+						    background-color: #cccc00;">
+						    	<img src="img/oba.png" title="Apagar nota" style="display: block;
+						    	height: 18px;						    	
+							    margin-left: auto;
+							    margin-right: auto;">
+						    </button>
+						</form>
+					</td>
+					</tr>
+					
+					<tr style="display: block;
+				    background-color: #ffff99;
+				    width: auto;
+				    height: auto;
+				    word-break: break-word;">
+						<td class="bot-nota-cell">
+						<form action="alteraNota" id="altera-nota" method="post">
+							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
+							<input type="hidden" name="tipo_nota" value="<%=nota.getTipo() %>">
+							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
+							<input type="text" name="edit_nota" value="<%=nota.getConteudo() %>"
+							 style="outline: none;
+							 background: transparent;
+							 border-top: transparent;
+							 border-right: transparent;
+							 border-left: transparent;
+							 border-bottom: transparent">
+							<button type="submit" name="id_mural" value="<%=id_mural%>">
+							    <img src="img/edit.png" title="Adicionar Imagem" style="display: block;
+						    	height: 13px;						    	
+							    margin-left: auto;
+							    margin-right: auto;"></img>
+							</button>
+						</form>
+						
+						<form action="criaBlob" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
+							<input type="hidden" name="id_mural" value="<%=id_mural %>">
+							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
+							<label for="lable" style="display: block;
+							    width: 20px;
+							    height: 20px;
+							    background-position: 0px 0px;
+							    border: 0px;
+							    padding: 1px;
+							    cursor: pointer;
+							    background-color: #ffff99;">
+							    <img src="img/add.png" title="Adicionar Imagem" style="display: block;
+						    	height: 22px;						    	
+							    margin-left: auto;
+							    margin-right: auto;"></img>
+							</label>
+							<input type="file" onchange="this.form.submit()" id="lable" name="blob" required="required" class="inputfile">
+						</form>
+						
+						<form action="mostraBlob" method="post">
+							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
+							<input type="hidden" name="id_mural" value="<%=id_mural %>">
+							<input type="hidden" name="id_usuario" value="<%=id_usuario %>">
+							<button type="submit">Mostrar Imagem </button>
+						</form>
+						</td>
+					</tr>
+					
+				</table>
+			<% } %>
+			
+		</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
