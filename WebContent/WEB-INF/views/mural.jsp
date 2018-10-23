@@ -70,7 +70,7 @@
 		</div>
 		<form class="search">
 			<input type="text" name="search" placeholder="Procurar..."
-				style="border: none; border-bottom: solid; border-radius: 5px; color: white; border-color: #a0a0a0; background-color: #5d5d5d; height: 32px; width: 32%; min-width: 130px; background-position: 9px 4px; background-image: url('img/search-icon.png'); background-repeat: no-repeat; padding-left: 40px;">
+				style="border: none; border-bottom: solid; border-radius: 5px; color: white; border-color: #a0a0a0; background-color: #5d5d5d; height: 32px; width: 32%; min-width: 130px; background-position: 9px 4px; background-image: url('WEB-INF/img/search-icon.png'); background-repeat: no-repeat; padding-left: 40px;">
 		</form>
 	</div>
 
@@ -137,7 +137,7 @@
 						    padding: 1px;
 						    cursor: pointer;
 						    background-color: #cccc00;">
-						    	<img src="img/oba.png" title="Apagar nota" style="display: block;
+						    	<img src="WEB-INF/img/oba.png" title="Apagar nota" style="display: block;
 						    	height: 18px;						    	
 							    margin-left: auto;
 							    margin-right: auto;">
@@ -154,6 +154,7 @@
 						<td class="bot-nota-cell">
 						<form action="alteraNota" id="altera-nota" method="post">
 							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
+							<% System.out.println(nota.getId()); %>
 							<input type="hidden" name="tipo_nota" value="<%=nota.getTipo() %>">
 							<input type="hidden" name="id_usuario" value="<%=id_usuario%>">
 							<input type="text" name="edit_nota" value="<%=nota.getConteudo() %>"
@@ -164,13 +165,13 @@
 							 border-left: transparent;
 							 border-bottom: transparent">
 							<button type="submit" name="id_mural" value="<%=id_mural%>">
-							    <img src="img/edit.png" title="Adicionar Imagem" style="display: block;
+							    <img src="WEB-INF/img/edit.png" title="Adicionar Imagem" style="display: block;
 						    	height: 13px;						    	
 							    margin-left: auto;
 							    margin-right: auto;"></img>
 							</button>
 						</form>
-						
+						<!-- 
 						<form action="criaBlob" method="post" enctype="multipart/form-data">
 							<input type="hidden" name="id_nota" value="<%=nota.getId() %>">
 							<input type="hidden" name="id_mural" value="<%=id_mural %>">
@@ -197,6 +198,7 @@
 							<input type="hidden" name="id_usuario" value="<%=id_usuario %>">
 							<button type="submit">Mostrar Imagem </button>
 						</form>
+						 -->
 						</td>
 					</tr>
 					

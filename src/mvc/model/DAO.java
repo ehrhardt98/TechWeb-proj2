@@ -245,14 +245,14 @@ public class DAO {
 		}
 	}
 	
-	public byte[] viewBlob(Nota nota) {
+	public byte[] viewBlob(String id_nota) {
 		String sql = "SELECT bloob FROM notas WHERE id_nota=?";
 		PreparedStatement stmt;
 		
 		try {
 			stmt = connection.prepareStatement(sql);
 			
-			stmt.setInt(1, nota.getId());
+			stmt.setInt(1, Integer.parseInt(id_nota));
 			
 			ResultSet rs = stmt.executeQuery();
 			

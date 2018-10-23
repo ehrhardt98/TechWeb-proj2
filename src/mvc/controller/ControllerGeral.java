@@ -55,8 +55,6 @@ public class ControllerGeral {
 					while(sc.hasNext()) {
 						inline += sc.nextLine();
 					}
-					System.out.println("\nJSON data in string format");
-					System.out.println(inline);
 					sc.close();
 					
 					List<String> ret = new ArrayList<String>();
@@ -105,8 +103,6 @@ public class ControllerGeral {
 					while(sc.hasNext()) {
 						inline += sc.nextLine();
 					}
-					System.out.println("\nJSON data in string format");
-					System.out.println(inline);
 					sc.close();
 					
 					String trivia = inline.substring(inline.lastIndexOf("\"text\": \"")+9, inline.indexOf(".\", \"number\":"));
@@ -127,7 +123,7 @@ public class ControllerGeral {
 		return null;
 	}
 
-	@RequestMapping(value = {"", "/", "voltaInicio"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "voltaInicio"}, method = RequestMethod.GET)
 	public String execute() {
 		return "inicio";
 	}
@@ -276,7 +272,7 @@ public class ControllerGeral {
 		return "home";
 	}
 
-	@RequestMapping(value = "criaNota", method = RequestMethod.POST)
+	@RequestMapping(value = "/criaNota", method = RequestMethod.POST)
 	public String criaNota(@RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_mural") String sid_mural, @RequestParam(value="create_note") String create_note, Model model) {
 		DAO dao = new DAO();
 		Nota nota = new Nota();
@@ -304,7 +300,7 @@ public class ControllerGeral {
 	}
 
 	@RequestMapping(value = "deletaNota", method = RequestMethod.POST)
-	public String deletaNota(@RequestParam(value="id_nota") String sid_nota, @RequestParam(value="id_mural") String sid_mural,@RequestParam(value="id_usuario") String sid_usuario, Model model) {
+	public String deletaNota(@RequestParam(value="id_nota") String sid_nota, @RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, Model model) {
 		DAO dao = new DAO();
 		Integer id_nota = Integer.parseInt(sid_nota);
 		Integer id_mural = Integer.parseInt(sid_mural);
@@ -351,48 +347,38 @@ public class ControllerGeral {
 		model.addAttribute("trivia", this.jsonParser2());
 		return "mural";
 	}
+
 	
-	@RequestMapping(value = "criaBlob", method = RequestMethod.POST)
-	public String criaBlob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, Model model, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping(value="criaBlob", method=RequestMethod.POST)
+	@ResponseBody
+	public String blooob(@RequestParam(value="id_mural") String sid_mural, @RequestParam(value="id_usuario") String sid_usuario, @RequestParam(value="id_nota") String sid_nota, @RequestParam(value="blob") MultipartFile filePart, Model model) throws ServletException, IOException {
 		DAO dao;
 		Integer id_mural = Integer.parseInt(sid_mural);
 		Integer id_usuario = Integer.parseInt(sid_usuario);
 		Integer id_nota = Integer.parseInt(sid_nota);
-		
-		PrintWriter out = response.getWriter();
-		Part part = request.getPart("blob");
 
-		if (part != null) {
-			try {
-				dao = new DAO();
+		InputStream fileContent = (InputStream) filePart.getInputStream();
 
-				Nota nota = new Nota();
-				InputStream input = part.getInputStream();
+		try {
+			dao = new DAO();
 
-				nota.setId(id_nota);
-				nota.setBlob(input);
+			Nota nota = new Nota();
 
-				nota.setIdMural(id_mural);
+			nota.setId(id_nota);
+			nota.setBlob(fileContent);
+			nota.setIdMural(id_mural);
 
-				dao.adicionaBlob(nota);
+			dao.adicionaBlob(nota);
 
-				dao.close();
+			dao.close();
 
-				model.addAttribute("id_mural", id_mural);
-				model.addAttribute("id_usuario", id_usuario);
-				List<String> lista = this.jsonParser();
-				model.addAttribute("temperatura", lista.get(0));
-				model.addAttribute("local", lista.get(1));
-				model.addAttribute("main", lista.get(2));
-				model.addAttribute("humidade", lista.get(3));
-				model.addAttribute("trivia", this.jsonParser2());
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/mural.jsp");
-				dispatcher.forward(request, response);
+			model.addAttribute("id_mural", id_mural);
+			model.addAttribute("id_usuario", id_usuario);
 
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
+
 		return "mural";
 	}
 
@@ -411,7 +397,7 @@ public class ControllerGeral {
 
 		nota.setId(id_nota);
 
-		byte[] a = dao.viewBlob(nota);
+		byte[] a = dao.viewBlob(sid_nota);
 
 		model.addAttribute("id_mural", id_mural);
 		model.addAttribute("id_usuario", id_usuario);
